@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lösungsportal · Mathematik Realschule</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   TOKENS
+   ═══════════════════════════════════════════ */
+:root {
+  --p:    #1C5F96;
+  --p-d:  #0E3A5E;
+  --p-l:  #E8F1FA;
+  --a:    #CF7C09;
+  --a-l:  #FDF3E3;
+  --g:    #1A7A50;
+  --g-l:  #E6F4EE;
+  --v:    #6D28D9;
+  --v-l:  #F0EBFC;
+  --t:    #0E7490;
+  --t-l:  #E0F5F8;
+  --ink:  #0F1A2E;
+  --ink2: #4A5568;
+  --ink3: #94A3B8;
+  --bdr:  #CBD5E3;
+  --bg:   #F0F4F9;
+  --card: #FFFFFF;
+  --ff:   'Outfit', sans-serif;
+  --ffm:  'JetBrains Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--ff);
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ═══════════════════════════════════════════
+   HERO / TOPBAR
+   ═══════════════════════════════════════════ */
+.topbar {
+  background: var(--p-d);
+  padding: 0 28px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  box-shadow: 0 2px 12px rgba(0,0,0,.25);
+}
+.topbar-mark {
+  width: 32px; height: 32px;
+  background: var(--a);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: 900; color: white;
+  flex-shrink: 0;
+}
+.topbar-title {
+  font-size: 14px; font-weight: 800; color: white; letter-spacing: -.01em;
+}
+.topbar-sub { font-size: 11px; color: rgba(255,255,255,.55); margin-top: 1px; }
+.topbar-spacer { flex: 1; }
+.topbar-search {
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 8px;
+  padding: 6px 12px;
+}
+.topbar-search input {
+  background: none; border: none; outline: none;
+  color: white; font-family: var(--ff); font-size: 12px;
+  width: 180px;
+}
+.topbar-search input::placeholder { color: rgba(255,255,255,.4); }
+.topbar-search-ico { color: rgba(255,255,255,.5); font-size: 14px; }
+
+/* ═══════════════════════════════════════════
+   HERO BANNER
+   ═══════════════════════════════════════════ */
+.hero {
+  background: linear-gradient(135deg, var(--p-d) 0%, #1a4a7a 60%, #1C5F96 100%);
+  padding: 44px 28px 36px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 70% 50%, rgba(207,124,9,.18) 0%, transparent 60%);
+}
+.hero::after {
+  content: '∑ ∈ ℙ ≈ ∅ π';
+  position: absolute;
+  right: 28px; top: 20px;
+  font-family: var(--ffm);
+  font-size: 28px;
+  color: rgba(255,255,255,.07);
+  letter-spacing: .2em;
+  pointer-events: none;
+}
+.hero-inner { position: relative; max-width: 900px; }
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: rgba(207,124,9,.2); border: 1px solid rgba(207,124,9,.35);
+  border-radius: 20px; padding: 4px 12px;
+  font-size: 11px; font-weight: 700; color: #F5C07A;
+  text-transform: uppercase; letter-spacing: .08em;
+  margin-bottom: 14px;
+}
+.hero h1 {
+  font-size: 32px; font-weight: 900; color: white;
+  line-height: 1.15; letter-spacing: -.02em;
+  margin-bottom: 10px;
+}
+.hero h1 span { color: #F5C07A; }
+.hero-desc {
+  font-size: 14px; color: rgba(255,255,255,.7);
+  max-width: 520px; margin-bottom: 22px;
+}
+.hero-stats {
+  display: flex; gap: 20px; flex-wrap: wrap;
+}
+.hero-stat {
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 10px;
+  padding: 10px 16px;
+  text-align: center;
+}
+.hero-stat-n  { font-size: 22px; font-weight: 900; color: #F5C07A; }
+.hero-stat-lbl{ font-size: 10.5px; color: rgba(255,255,255,.55); margin-top: 1px; }
+
+/* ═══════════════════════════════════════════
+   LAYOUT
+   ═══════════════════════════════════════════ */
+.shell {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 32px 24px 64px;
+}
+
+/* ═══════════════════════════════════════════
+   SEKTION (Thema)
+   ═══════════════════════════════════════════ */
+.topic-section {
+  margin-bottom: 40px;
+}
+.topic-header {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--bdr);
+}
+.topic-icon {
+  width: 40px; height: 40px;
+  background: var(--p);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.topic-title { font-size: 18px; font-weight: 800; color: var(--p-d); }
+.topic-meta  { font-size: 11.5px; color: var(--ink3); margin-top: 2px; }
+.topic-count {
+  margin-left: auto;
+  background: var(--p-l); color: var(--p);
+  font-size: 11px; font-weight: 700;
+  padding: 4px 10px; border-radius: 20px;
+}
+
+/* ═══════════════════════════════════════════
+   MATERIAL-GRID
+   ═══════════════════════════════════════════ */
+.mat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+}
+
+/* ═══════════════════════════════════════════
+   MATERIAL CARD
+   ═══════════════════════════════════════════ */
+.mat-card {
+  background: var(--card);
+  border: 1.5px solid var(--bdr);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: box-shadow .2s, transform .15s, border-color .2s;
+  scroll-margin-top: 80px;
+}
+.mat-card:hover {
+  box-shadow: 0 8px 24px rgba(28,95,150,.12);
+  transform: translateY(-2px);
+  border-color: var(--p);
+}
+.mat-card-top {
+  padding: 14px 16px 12px;
+  border-bottom: 1px solid var(--bdr);
+  display: flex; align-items: flex-start; gap: 10px;
+}
+.mat-badge {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px; font-weight: 900; flex-shrink: 0;
+}
+.mat-badge.k1  { background: var(--p-l); color: var(--p); }
+.mat-badge.k2  { background: var(--a-l); color: var(--a); }
+.mat-badge.k3  { background: #FAF0EA;   color: #C2571A; }
+.mat-badge.k4  { background: var(--t-l); color: var(--t); }
+.mat-badge.loe { background: var(--g-l); color: var(--g); }
+
+.mat-title  { font-size: 13.5px; font-weight: 800; color: var(--ink); line-height: 1.3; }
+.mat-sub    { font-size: 11px; color: var(--ink3); margin-top: 3px; }
+
+.mat-card-body { padding: 12px 16px; }
+
+.mat-tags { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 10px; }
+.tag {
+  font-size: 10px; font-weight: 700; padding: 2px 8px;
+  border-radius: 10px; background: var(--bg);
+  color: var(--ink2); border: 1px solid var(--bdr);
+}
+.tag.k1  { background: var(--p-l); color: var(--p);   border-color: rgba(28,95,150,.2); }
+.tag.k4  { background: var(--t-l); color: var(--t);   border-color: rgba(14,116,144,.2); }
+.tag.loe { background: var(--g-l); color: var(--g);   border-color: rgba(26,122,80,.2); }
+
+/* Lösungsvorschau — eingeklappt/ausgeklappt */
+.loe-preview {
+  display: none;
+  margin-top: 10px;
+  background: var(--g-l);
+  border: 1px solid rgba(26,122,80,.2);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 12px;
+  color: var(--ink);
+  line-height: 1.7;
+  font-family: var(--ffm);
+  white-space: pre-wrap;
+}
+.loe-preview.open { display: block; }
+
+.mat-card-footer {
+  padding: 10px 16px;
+  background: var(--bg);
+  border-top: 1px solid var(--bdr);
+  display: flex; align-items: center; gap: 8px;
+}
+.btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-family: var(--ff); font-size: 11.5px; font-weight: 700;
+  padding: 6px 12px; border-radius: 7px; border: none;
+  cursor: pointer; transition: filter .15s, opacity .15s;
+  text-decoration: none; white-space: nowrap;
+}
+.btn:hover { filter: brightness(1.08); }
+.btn-primary { background: var(--p); color: white; }
+.btn-ghost   { background: white; color: var(--ink2); border: 1.5px solid var(--bdr); }
+.btn-green   { background: var(--g); color: white; }
+.btn-sm      { font-size: 10.5px; padding: 4px 9px; }
+
+.anchor-url {
+  margin-left: auto;
+  font-family: var(--ffm);
+  font-size: 9.5px;
+  color: var(--ink3);
+  background: var(--bg);
+  border: 1px solid var(--bdr);
+  border-radius: 5px;
+  padding: 2px 7px;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: border-color .15s, color .15s;
+}
+.anchor-url:hover { border-color: var(--p); color: var(--p); }
+.anchor-url.copied { border-color: var(--g); color: var(--g); background: var(--g-l); }
+
+/* ═══════════════════════════════════════════
+   LÖSUNGS-DETAIL (große Ansicht)
+   ═══════════════════════════════════════════ */
+.loe-panel {
+  display: none;
+  background: white;
+  border: 2px solid var(--g);
+  border-radius: 12px;
+  padding: 20px 22px;
+  margin-top: 10px;
+}
+.loe-panel.open { display: block; }
+.loe-panel-hdr {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--g-l);
+}
+.loe-panel-title { font-size: 14px; font-weight: 800; color: var(--g-d, #125736); }
+.loe-aufgabe {
+  margin-bottom: 14px;
+}
+.loe-auf-hdr {
+  font-size: 11px; font-weight: 900; text-transform: uppercase;
+  letter-spacing: .07em; color: var(--g);
+  margin-bottom: 5px;
+  display: flex; align-items: center; gap: 6px;
+}
+.loe-auf-hdr::after { content:''; flex:1; height:1px; background:var(--g-l); }
+.loe-code {
+  font-family: var(--ffm); font-size: 12px;
+  background: var(--g-l); border: 1px solid rgba(26,122,80,.2);
+  border-radius: 6px; padding: 9px 12px;
+  line-height: 1.9; color: var(--ink);
+  white-space: pre-wrap;
+}
+
+/* ═══════════════════════════════════════════
+   ADMIN PANEL (Lösung hinzufügen)
+   ═══════════════════════════════════════════ */
+.admin-banner {
+  background: white;
+  border: 1.5px solid var(--bdr);
+  border-radius: 12px;
+  padding: 18px 22px;
+  margin-bottom: 28px;
+}
+.admin-title {
+  font-size: 14px; font-weight: 800; color: var(--ink);
+  margin-bottom: 4px; display: flex; align-items: center; gap: 7px;
+}
+.admin-sub { font-size: 12px; color: var(--ink3); margin-bottom: 14px; }
+.admin-grid {
+  display: grid; grid-template-columns: 1fr 1fr auto; gap: 8px; align-items: end;
+}
+.form-group { display: flex; flex-direction: column; gap: 4px; }
+.form-label { font-size: 10.5px; font-weight: 700; color: var(--ink2); }
+.form-input {
+  border: 1.5px solid var(--bdr); border-radius: 7px;
+  padding: 7px 10px; font-family: var(--ff); font-size: 12px; color: var(--ink);
+  outline: none; transition: border-color .15s;
+}
+.form-input:focus { border-color: var(--p); }
+.form-select {
+  border: 1.5px solid var(--bdr); border-radius: 7px;
+  padding: 7px 10px; font-family: var(--ff); font-size: 12px; color: var(--ink);
+  background: white; outline: none;
+}
+
+/* ═══════════════════════════════════════════
+   HOSTING-ANLEITUNG
+   ═══════════════════════════════════════════ */
+.hosting-box {
+  background: linear-gradient(135deg, #0F3460 0%, #1C5F96 100%);
+  border-radius: 14px;
+  padding: 24px 26px;
+  margin-top: 40px;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+.hosting-box::after {
+  content: '🌐';
+  position: absolute; right: 24px; top: 20px;
+  font-size: 48px; opacity: .15;
+}
+.hosting-title { font-size: 16px; font-weight: 800; margin-bottom: 6px; }
+.hosting-sub   { font-size: 12.5px; opacity: .75; margin-bottom: 18px; }
+.hosting-steps {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+.hosting-step {
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 10px; padding: 12px 14px;
+}
+.hosting-step-n {
+  font-size: 11px; font-weight: 900;
+  color: #F5C07A; margin-bottom: 5px;
+  text-transform: uppercase; letter-spacing: .06em;
+}
+.hosting-step-txt { font-size: 12px; opacity: .85; line-height: 1.5; }
+.hosting-url-field {
+  margin-top: 16px;
+  background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2);
+  border-radius: 8px; padding: 9px 14px;
+  display: flex; align-items: center; gap: 10px;
+}
+.hosting-url-field input {
+  flex: 1; background: none; border: none; outline: none;
+  font-family: var(--ffm); font-size: 12px; color: white;
+}
+.hosting-url-field input::placeholder { color: rgba(255,255,255,.4); }
+
+/* ═══════════════════════════════════════════
+   TOAST
+   ═══════════════════════════════════════════ */
+.toast {
+  position: fixed; bottom: 24px; right: 24px;
+  background: var(--ink); color: white;
+  padding: 12px 18px; border-radius: 10px;
+  font-size: 13px; font-weight: 600;
+  box-shadow: 0 8px 24px rgba(0,0,0,.3);
+  transform: translateY(80px); opacity: 0;
+  transition: transform .3s, opacity .3s;
+  z-index: 999;
+  display: flex; align-items: center; gap: 8px;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+
+/* ═══════════════════════════════════════════
+   EMPTY STATE
+   ═══════════════════════════════════════════ */
+.empty-state {
+  text-align: center; padding: 40px 20px;
+  color: var(--ink3);
+}
+.empty-state-ico { font-size: 40px; margin-bottom: 12px; opacity: .4; }
+.empty-state-txt { font-size: 13px; }
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════ */
+@media (max-width: 600px) {
+  .admin-grid { grid-template-columns: 1fr; }
+  .hero h1 { font-size: 24px; }
+  .mat-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-mark">M</div>
+  <div>
+    <div class="topbar-title">Lösungsportal · Mathematik</div>
+    <div class="topbar-sub">Realschule Klassen 5–10</div>
+  </div>
+  <div class="topbar-spacer"></div>
+  <div class="topbar-search">
+    <span class="topbar-search-ico">🔍</span>
+    <input type="text" id="search-input" placeholder="Material suchen …" oninput="filterMaterials(this.value)">
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">📚 Unterrichtsmaterialien</div>
+    <h1>Musterlösungen &amp;<br><span>Lernhilfen</span></h1>
+    <p class="hero-desc">Alle Lösungen zu unseren Arbeitsblättern — erreichbar per QR-Code direkt aus dem Unterricht.</p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-n" id="stat-themen">2</div>
+        <div class="hero-stat-lbl">Themen</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-n" id="stat-mat">7</div>
+        <div class="hero-stat-lbl">Materialien</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-n" id="stat-loe">7</div>
+        <div class="hero-stat-lbl">Lösungen</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="shell">
+
+  <!-- ADMIN: Lösung hinzufügen -->
+  <div class="admin-banner">
+    <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px; padding-bottom:10px; border-bottom:1px solid var(--bdr);">
+      <span style="font-size:20px;">🌐</span>
+      <div>
+        <div style="font-size:13px; font-weight:800; color:var(--ink);">Deine Portal-URL — einmalig eingeben</div>
+        <div style="font-size:11px; color:var(--ink3);">Diese URL kommt in alle QR-Codes deiner Arbeitsblätter.</div>
+      </div>
+      <span id="url-set-badge" style="display:none; margin-left:auto; background:var(--g-l); color:var(--g); border:1px solid rgba(26,122,80,.2); border-radius:20px; padding:3px 11px; font-size:10px; font-weight:800;">✓ URL gesetzt</span>
+    </div>
+    <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+      <input id="my-portal-url" class="form-input" type="text"
+        placeholder="https://DEIN-NAME.github.io/mathe/loesungsportal.html"
+        oninput="setPortalUrl(this.value)"
+        style="flex:1; min-width:200px; font-family:var(--ffm); font-size:12px;">
+      <button class="btn btn-primary" onclick="copyPortalUrl()">📋 URL kopieren</button>
+      <button class="btn btn-ghost" onclick="showAllQrUrls()">🔗 Alle QR-Links anzeigen</button>
+    </div>
+    <div id="all-qr-urls" style="display:none; margin-top:12px; background:var(--bg); border-radius:8px; padding:12px 14px;">
+      <div style="font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:.06em; color:var(--ink3); margin-bottom:8px;">Alle QR-Code URLs — in AB-Dateien einfügen:</div>
+      <div id="qr-url-list" style="font-family:var(--ffm); font-size:11px; line-height:2.2; color:var(--ink2);"></div>
+    </div>
+  </div>
+
+  <div class="admin-banner" style="margin-top:-14px;">
+    <div class="admin-title">➕ Material / Lösung hinzufügen</div>
+    <div class="admin-sub">Trage hier ein neues Material ein, um es auf dem Portal zu verlinken und den QR-Code-Link zu erhalten.</div>
+    <div class="admin-grid">
+      <div class="form-group">
+        <label class="form-label">Thema</label>
+        <select class="form-select" id="new-topic">
+          <option value="terme-kl7">Terme · Kl. 7</option>
+          <option value="daten-zufall-kl7">Daten &amp; Zufall · Kl. 7</option>
+          <option value="neu">+ Neues Thema …</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Materialname</label>
+        <input class="form-input" id="new-name" type="text" placeholder="z.B. AB 4 · Vierfeldertafel">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Kategorie</label>
+        <select class="form-select" id="new-kat">
+          <option value="k1">K1 · Einführung</option>
+          <option value="k2">K2 · Übung</option>
+          <option value="k3">K3 · Transfer</option>
+          <option value="k4">K4 · Klapp/Station</option>
+          <option value="loe">Lösungsblatt</option>
+        </select>
+      </div>
+    </div>
+    <div style="margin-top:10px; display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+      <div class="form-group" style="flex:1; min-width:220px;">
+        <label class="form-label">Lösungstext (optional — Vorschau für Schüler)</label>
+        <input class="form-input" id="new-loe-text" type="text" placeholder="z.B. Aufg.1: a) 3x+5  b) 8  …">
+      </div>
+      <button class="btn btn-primary" style="margin-top:18px;" onclick="addMaterial()">➕ Hinzufügen</button>
+    </div>
+  </div>
+
+  <!-- MATERIALIEN (dynamisch gerendert) -->
+  <div id="materials-root"></div>
+
+  <!-- HOSTING ANLEITUNG -->
+  <div class="hosting-box">
+    <div class="hosting-title">🌐 Diese Seite hosten — kostenlos in 5 Minuten</div>
+    <div class="hosting-sub">Damit QR-Codes weltweit aufrufbar sind, muss diese Datei auf einem Server liegen. Einfachste Option: GitHub Pages.</div>
+    <div class="hosting-steps">
+      <div class="hosting-step">
+        <div class="hosting-step-n">Schritt 1</div>
+        <div class="hosting-step-txt">Kostenloses Konto auf <strong>github.com</strong> erstellen (kostenlos, kein Kreditkarte)</div>
+      </div>
+      <div class="hosting-step">
+        <div class="hosting-step-n">Schritt 2</div>
+        <div class="hosting-step-txt">Neues Repository anlegen → diese <code>loesungsportal.html</code> hochladen → als <strong>index.html</strong> umbenennen</div>
+      </div>
+      <div class="hosting-step">
+        <div class="hosting-step-n">Schritt 3</div>
+        <div class="hosting-step-txt">Im Repository: <em>Settings → Pages → Branch: main</em> aktivieren → fertig</div>
+      </div>
+      <div class="hosting-step">
+        <div class="hosting-step-n">Schritt 4</div>
+        <div class="hosting-step-txt">Deine URL lautet dann:<br><strong>https://nutzername.github.io/mathe/</strong></div>
+      </div>
+    </div>
+    <div class="hosting-url-field">
+      <span style="font-size:13px; opacity:.7;">🔗</span>
+      <input id="base-url-input" type="text" placeholder="https://nutzername.github.io/mathe/loesungsportal.html" oninput="updateBaseUrl(this.value)">
+      <button class="btn btn-sm" style="background:rgba(255,255,255,.15); color:white; border:none;" onclick="copyBaseUrl()">QR-URLs kopieren</button>
+    </div>
+  </div>
+
+</div><!-- /shell -->
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ══════════════════════════════════════════════
+   DATENBANK (lokale Instanz — wird mit jedem
+   neuen Material erweitert; Klasse "state")
+   ══════════════════════════════════════════════ */
+const INITIAL_DATA = [
+  {
+    topicId: 'terme-kl7',
+    topicLabel: 'Terme · Klasse 7',
+    topicIcon: '🔢',
+    klasse: 'Kl. 7',
+    items: [
+      {
+        id: 'terme-kl7-ab-main',
+        title: 'AB 1 · Standard (Level 2)',
+        sub: 'Einführung Terme und Termwerte · Zug-Kontext',
+        kat: 'k1',
+        katLabel: 'K1 · Einführung',
+        loesung: [
+          { auf: 'Aufgabe 1', text: 'a) T(x) = 60 + 20·x\nb) T(5) = 160 Personen\nc) x = 7 Wagen' },
+          { auf: 'Aufgabe 2', text: 'a) T(0) = 60 · T(3) = 120 · T(7) = 200\nb) Tabelle: x=0→60 · x=1→80 · x=2→100 · x=3→120' },
+          { auf: 'Aufgabe 3', text: 'Punkte: (0|60)(1|80)(2|100)(3|120)(4|140)(5|160)\n→ Punkte durch Gerade verbinden (linearer Term)' },
+          { auf: 'Aufgabe 4', text: 'a) T(x) = 3 + 2,50·x  →  T(8) = 23 €\nb) T(x) = 200 + 15·x  →  T(12) = 380 l' },
+          { auf: 'Aufgabe 5', text: '32 Personen: T(32) = 60 + 20·32 = 700 Muschel-Dollar' },
+        ]
+      },
+      {
+        id: 'terme-kl7-ab-n1',
+        title: 'AB 2 · Level 1 (Basis)',
+        sub: 'Mit vollständigem Beispiel und Lückentabelle',
+        kat: 'k1',
+        katLabel: 'K1 · Einführung',
+        loesung: [
+          { auf: 'Aufgabe 1', text: 'Lückentabelle:\nx=0→15 · x=1→20 · x=2→25 · x=3→30 · x=5→40' },
+          { auf: 'Aufgabe 2', text: 'T(x) = 15 + 5·x\nT(8) = 15 + 40 = 55 Fische' },
+          { auf: 'Aufgabe 3', text: 'T(x) = 15 + 5·x → x = (T-15)/5\nFür T=65: x = 10 Wochen' },
+        ]
+      },
+      {
+        id: 'terme-kl7-ab-n3',
+        title: 'AB 3 · Level 3 (Profi)',
+        sub: 'Zwei-Zug-Vergleich · eigener Kontext',
+        kat: 'k1',
+        katLabel: 'K1 · Einführung',
+        loesung: [
+          { auf: 'Aufgabe 1', text: 'Zug A: T_A(x) = 60 + 20x\nZug B: T_B(x) = 80 + 15x\nGleich: 60+20x = 80+15x → 5x=20 → x=4 Wagen' },
+          { auf: 'Aufgabe 2', text: 'Eigener Kontext: Beliebige lineare Situationen mit nachvollziehbarem Grundwert und Zuwachs.' },
+          { auf: 'Aufgabe 3', text: 'Grafik: Alle drei Geraden schneiden sich in verschiedenen Punkten.\nSchnittpunkt A∩B bei x=4, A∩C bei x=6, B∩C bei x=8.' },
+        ]
+      },
+      {
+        id: 'terme-kl7-loe',
+        title: 'Lösungsblatt (alle Level)',
+        sub: 'Vollständige Musterlösung · Bewertungshinweis',
+        kat: 'loe',
+        katLabel: 'Lösungsblatt',
+        loesung: [
+          { auf: 'Hinweis', text: 'Dieses Lösungsblatt fasst alle drei Level-ABs zusammen.\nSiehe die einzelnen Lösungsblätter für Details.' },
+        ]
+      },
+    ]
+  },
+  {
+    topicId: 'daten-zufall-kl7',
+    topicLabel: 'Daten und Zufall · Klasse 7',
+    topicIcon: '🎲',
+    klasse: 'Kl. 7',
+    items: [
+      {
+        id: 'dz-ab1',
+        title: 'AB 1 · Zufallsexperimente',
+        sub: 'Einführung · Begriff · Ergebnis · Ereignis',
+        kat: 'k1',
+        katLabel: 'K1 · Einführung',
+        loesung: [
+          { auf: 'Aufgabe 1 — Einordnung', text: 'Möglich: A, D\nSicher: B (Kopf oder Zahl tritt immer ein)\nUnmöglich: C (keine Zahl <0 bei 1–6)' },
+          { auf: 'Aufgabe 2 — Zufallsexperiment?', text: 'a) Ja — Ausgang nicht vorhersagbar\nb) Nein — Wasser kocht sicher bei 100°C\nc) Ja — gezogene Karte ist unbekannt' },
+          { auf: 'Aufgabe 3 — Würfelwurf', text: 'a) {1, 2, 3, 4, 5, 6}\nb) Möglich — 2, 4, 6 sind gerade (aber nicht alle)\nc) Sicher: "Augenzahl ≤ 6"  ·  Unmöglich: "Augenzahl = 7"' },
+          { auf: 'Aufgabe 4 — Knobelaufgabe', text: 'Nein. Möglich ≠ Sicher.\nBeispiel: Eine 6 würfeln ist möglich, aber nicht sicher.' },
+        ]
+      },
+      {
+        id: 'dz-ab2',
+        title: 'AB 2 · Baumdiagramme',
+        sub: 'Einstufige und zweistufige Experimente darstellen',
+        kat: 'k1',
+        katLabel: 'K1 · Einführung',
+        loesung: [
+          { auf: 'Aufgabe 1 — Münze 2× (K/Z)', text: 'Ergebnisse: (K,K) · (K,Z) · (Z,K) · (Z,Z)\nAnzahl: 4\n"Min. 1× Kopf": (K,K), (K,Z), (Z,K) — 3 von 4' },
+          { auf: 'Aufgabe 2 — Urne mit Zurücklegen', text: 'Ergebnisse: (R,R) · (R,G) · (G,R) · (G,G)\nAnzahl: 4\n"Beide gleich": (R,R) und (G,G)' },
+        ]
+      },
+      {
+        id: 'dz-ab3',
+        title: 'AB 3 · Häufigkeiten',
+        sub: 'Absolut → relativ → Bruch → Prozent',
+        kat: 'k1',
+        katLabel: 'K1 · Einführung',
+        loesung: [
+          { auf: 'Aufgabe 1 — Münzwurf n=40', text: 'Kopf: H=26 · h=26/40=13/20 · 0,65 · 65%\nZahl: H=14 · h=14/40= 7/20 · 0,35 · 35%\nGesamt: 100%' },
+          { auf: 'Aufgabe 2 — Würfelwurf n=60', text: 'a) H(6)=12\nb) h=12/60=1/5=0,2=20%\nc) Erwartet: 16,7% — tatsächlich 20% → Schwankung normal' },
+          { auf: 'Aufgabe 3 — Lieblingsfarben n=25', text: 'Blau 40% · Rot 28% · Grün 20% · Andere 12%\nb) Blau mit 40%\nc) 40 Schüler/innen erwartet' },
+        ]
+      },
+    ]
+  }
+];
+
+/* ══════════════════════════════════════════════
+   STATE (wird per sessionStorage gehalten)
+   ══════════════════════════════════════════════ */
+let data = JSON.parse(sessionStorage.getItem('loe-portal-data') || 'null') || INITIAL_DATA;
+let baseUrl = sessionStorage.getItem('loe-portal-base') || '';
+
+function saveState() {
+  sessionStorage.setItem('loe-portal-data', JSON.stringify(data));
+  sessionStorage.setItem('loe-portal-base', baseUrl);
+}
+
+/* ══════════════════════════════════════════════
+   RENDER
+   ══════════════════════════════════════════════ */
+function getAnchorUrl(itemId) {
+  const b = baseUrl || window.location.href.split('#')[0];
+  return b + '#' + itemId;
+}
+
+function render(filterText) {
+  const root = document.getElementById('materials-root');
+  root.innerHTML = '';
+  let totalMat = 0;
+  let topicsShown = 0;
+
+  data.forEach(topic => {
+    const items = filterText
+      ? topic.items.filter(i =>
+          i.title.toLowerCase().includes(filterText.toLowerCase()) ||
+          i.sub.toLowerCase().includes(filterText.toLowerCase()) ||
+          topic.topicLabel.toLowerCase().includes(filterText.toLowerCase())
+        )
+      : topic.items;
+
+    if (items.length === 0) return;
+    topicsShown++;
+    totalMat += items.length;
+
+    const section = document.createElement('div');
+    section.className = 'topic-section';
+    section.innerHTML = `
+      <div class="topic-header">
+        <div class="topic-icon">${topic.topicIcon}</div>
+        <div>
+          <div class="topic-title">${topic.topicLabel}</div>
+          <div class="topic-meta">${topic.klasse} · Realschule Bayern</div>
+        </div>
+        <div class="topic-count">${items.length} Material${items.length !== 1 ? 'ien' : ''}</div>
+      </div>
+      <div class="mat-grid" id="grid-${topic.topicId}"></div>
+    `;
+    root.appendChild(section);
+
+    const grid = section.querySelector(`#grid-${topic.topicId}`);
+    items.forEach(item => {
+      grid.appendChild(renderCard(item, topic));
+    });
+  });
+
+  if (totalMat === 0) {
+    root.innerHTML = `<div class="empty-state">
+      <div class="empty-state-ico">🔍</div>
+      <div class="empty-state-txt">Keine Materialien gefunden für „${filterText}"</div>
+    </div>`;
+  }
+
+  document.getElementById('stat-themen').textContent = topicsShown || data.length;
+  const total = data.reduce((s, t) => s + t.items.length, 0);
+  document.getElementById('stat-mat').textContent = total;
+  document.getElementById('stat-loe').textContent = total;
+}
+
+function renderCard(item, topic) {
+  const card = document.createElement('div');
+  card.className = 'mat-card';
+  card.id = item.id;
+  card.setAttribute('data-search', (item.title + item.sub + topic.topicLabel).toLowerCase());
+
+  const anchorUrl = getAnchorUrl(item.id);
+  const loePanelId = 'loe-panel-' + item.id;
+
+  // Lösung HTML
+  const loeHtml = item.loesung.map((a, i) => `
+    <div class="loe-aufgabe">
+      <div class="loe-auf-hdr">✓ ${escHtml(a.auf)}</div>
+      <div class="loe-code">${escHtml(a.text)}</div>
+    </div>
+  `).join('');
+
+  const katIcons = { k1:'📘', k2:'✏️', k3:'🔀', k4:'📂', loe:'✓' };
+
+  card.innerHTML = `
+    <div class="mat-card-top">
+      <div class="mat-badge ${item.kat}">${katIcons[item.kat] || '📄'}</div>
+      <div>
+        <div class="mat-title">${escHtml(item.title)}</div>
+        <div class="mat-sub">${escHtml(item.sub)}</div>
+      </div>
+    </div>
+    <div class="mat-card-body">
+      <div class="mat-tags">
+        <span class="tag k1">${escHtml(item.katLabel)}</span>
+        <span class="tag">${escHtml(topic.klasse)}</span>
+        <span class="tag">${escHtml(topic.topicLabel)}</span>
+      </div>
+      <div class="loe-panel" id="${loePanelId}">
+        <div class="loe-panel-hdr">
+          <span style="font-size:18px; color:var(--g);">✓</span>
+          <span class="loe-panel-title">Musterlösung — ${escHtml(item.title)}</span>
+        </div>
+        ${loeHtml}
+      </div>
+    </div>
+    <div class="mat-card-footer">
+      <button class="btn btn-green btn-sm" onclick="toggleLoe('${loePanelId}', this)">✓ Lösung anzeigen</button>
+      <span class="anchor-url" title="Klicken zum Kopieren" onclick="copyUrl('${escAttr(anchorUrl)}', this)">${anchorUrl.replace(/^https?:\/\//, '').substring(0, 38)}${anchorUrl.length > 45 ? '…' : ''}</span>
+    </div>
+  `;
+  return card;
+}
+
+function toggleLoe(panelId, btn) {
+  const panel = document.getElementById(panelId);
+  const open = panel.classList.toggle('open');
+  btn.textContent = open ? '✕ Lösung schließen' : '✓ Lösung anzeigen';
+  btn.style.background = open ? 'var(--ink2)' : 'var(--g)';
+}
+
+/* ══════════════════════════════════════════════
+   ADD MATERIAL
+   ══════════════════════════════════════════════ */
+function addMaterial() {
+  const topicId = document.getElementById('new-topic').value;
+  const name    = document.getElementById('new-name').value.trim();
+  const kat     = document.getElementById('new-kat').value;
+  const loeText = document.getElementById('new-loe-text').value.trim();
+
+  if (!name) { showToast('⚠️ Bitte Materialname eingeben'); return; }
+
+  const katLabels = { k1:'K1 · Einführung', k2:'K2 · Übung', k3:'K3 · Transfer', k4:'K4 · Format', loe:'Lösungsblatt' };
+  const id = topicId + '-' + name.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-');
+
+  const newItem = {
+    id, title: name, sub: 'Neu hinzugefügt',
+    kat, katLabel: katLabels[kat] || kat,
+    loesung: loeText ? [{ auf: 'Lösung', text: loeText }] : [{ auf: 'Hinweis', text: 'Noch keine Lösung eingetragen.' }]
+  };
+
+  let topic = data.find(t => t.topicId === topicId);
+  if (topic) {
+    topic.items.push(newItem);
+  }
+
+  saveState();
+  render();
+  document.getElementById('new-name').value = '';
+  document.getElementById('new-loe-text').value = '';
+  showToast('✓ Material hinzugefügt — QR-Link bereit');
+
+  // Zur neuen Karte scrollen
+  setTimeout(() => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 100);
+}
+
+/* ══════════════════════════════════════════════
+   SUCHE
+   ══════════════════════════════════════════════ */
+function filterMaterials(q) {
+  render(q.trim() || null);
+}
+
+/* ══════════════════════════════════════════════
+   URL MANAGEMENT
+   ══════════════════════════════════════════════ */
+function updateBaseUrl(val) {
+  baseUrl = val.trim();
+  saveState();
+  render();
+}
+
+/* ── NEUE PORTAL-URL FUNKTIONEN ── */
+function setPortalUrl(val) {
+  baseUrl = val.trim();
+  saveState();
+  render();
+  const badge = document.getElementById('url-set-badge');
+  if (badge) badge.style.display = val.trim() ? 'block' : 'none';
+  // QR-URL-Liste aktualisieren wenn sichtbar
+  const list = document.getElementById('all-qr-urls');
+  if (list && list.style.display !== 'none') renderQrUrlList();
+}
+
+function renderQrUrlList() {
+  const list = document.getElementById('qr-url-list');
+  if (!list) return;
+  const allItems = data.flatMap(t => t.items.map(i => ({ label: t.topicLabel + ' · ' + i.title, url: getAnchorUrl(i.id) })));
+  list.innerHTML = allItems.map(i =>
+    `<div style="display:flex; align-items:center; gap:8px; padding:3px 0; border-bottom:1px solid var(--bdr);">
+      <span style="color:var(--ink3); min-width:220px; font-size:10.5px;">${escHtml(i.label)}</span>
+      <span style="color:var(--p); flex:1;">${escHtml(i.url)}</span>
+      <button onclick="copyOneUrl('${escAttr(i.url)}', this)"
+        style="font-family:var(--ff); font-size:10px; font-weight:700; background:var(--p-l); color:var(--p); border:1px solid rgba(28,95,150,.2); border-radius:5px; padding:2px 8px; cursor:pointer; white-space:nowrap;">
+        Kopieren
+      </button>
+    </div>`
+  ).join('');
+}
+
+function showAllQrUrls() {
+  const box = document.getElementById('all-qr-urls');
+  if (!box) return;
+  const open = box.style.display === 'none';
+  box.style.display = open ? 'block' : 'none';
+  if (open) renderQrUrlList();
+}
+
+function copyPortalUrl() {
+  const val = document.getElementById('my-portal-url').value.trim();
+  if (!val) { showToast('⚠ Bitte zuerst deine Portal-URL eingeben'); return; }
+  navigator.clipboard.writeText(val).then(() => showToast('✓ Portal-URL kopiert!'));
+}
+
+function copyOneUrl(url, btn) {
+  navigator.clipboard.writeText(url).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '✓ Kopiert!';
+    btn.style.background = 'var(--g-l)'; btn.style.color = 'var(--g)';
+    setTimeout(() => { btn.textContent = orig; btn.style.background = ''; btn.style.color = ''; }, 2000);
+  });
+}
+
+function copyBaseUrl() {
+  const allUrls = data.flatMap(t => t.items.map(i => getAnchorUrl(i.id)));
+  navigator.clipboard.writeText(allUrls.join('\n')).then(() => showToast('✓ Alle QR-URLs kopiert!'));
+}
+
+function copyUrl(url, el) {
+  navigator.clipboard.writeText(url).then(() => {
+    el.textContent = '✓ Kopiert!';
+    el.classList.add('copied');
+    setTimeout(() => {
+      el.classList.remove('copied');
+      el.textContent = url.replace(/^https?:\/\//, '').substring(0, 38) + (url.length > 45 ? '…' : '');
+    }, 2000);
+  });
+}
+
+/* ══════════════════════════════════════════════
+   DEEP LINK (Anker beim Laden öffnen)
+   ══════════════════════════════════════════════ */
+function handleAnchor() {
+  const hash = window.location.hash.slice(1);
+  if (!hash) return;
+  setTimeout(() => {
+    const el = document.getElementById(hash);
+    if (!el) return;
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    // Lösung automatisch aufklappen wenn via QR-Code aufgerufen
+    const loePanel = el.querySelector('.loe-panel');
+    const loeBtn   = el.querySelector('.btn-green');
+    if (loePanel && loeBtn) {
+      loePanel.classList.add('open');
+      loeBtn.textContent = '✕ Lösung schließen';
+      loeBtn.style.background = 'var(--ink2)';
+    }
+    // Karte kurz highlighten
+    el.style.transition = 'box-shadow .3s';
+    el.style.boxShadow  = '0 0 0 3px rgba(26,122,80,.5)';
+    setTimeout(() => { el.style.boxShadow = ''; }, 2000);
+  }, 300);
+}
+
+/* ══════════════════════════════════════════════
+   TOAST
+   ══════════════════════════════════════════════ */
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+/* ══════════════════════════════════════════════
+   UTILS
+   ══════════════════════════════════════════════ */
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function escAttr(s) {
+  return String(s).replace(/'/g, "\\'");
+}
+
+/* ══════════════════════════════════════════════
+   INIT
+   ══════════════════════════════════════════════ */
+render();
+handleAnchor();
+window.addEventListener('hashchange', handleAnchor);
+</script>
+</body>
+</html>
